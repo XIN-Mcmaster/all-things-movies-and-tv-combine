@@ -1,0 +1,41 @@
+.my-masonry-grid {
+    display: flex;
+    margin-left: 0px;
+    width: auto;
+}
+.my-masonry-grid_column {
+    padding-left: 10px; 
+    background-clip: padding-box;
+}
+
+
+.my-masonry-grid_column > div {
+    margin-bottom: 10px;
+}
+
+.images {
+    width: 100%;
+    height: auto;
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    -ms-border-radius: 15px;
+    -o-border-radius: 15px;
+    border-radius: 15px;
+}
+
+.search-input{
+    width: 100%;
+}
+
+.search-input input{
+    margin-bottom: 0px;
+}
+
+ul {
+    list-style-type: none;
+}
+
+.card-body{
+    padding: 8px;
+}
+  
