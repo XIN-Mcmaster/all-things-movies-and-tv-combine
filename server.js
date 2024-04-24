@@ -10,7 +10,13 @@ connectDB()
 
 const app = express();
 
-app.use(cors())
+const corsOptions = {
+  origin: [process.env.FRONTEND_URL],
+  credentials: true,
+  optionsSuccessStatus:200
+}
+
+app.use(cors(corsOptions))
 
 app.use(express.json()); // Middleware to parse JSON bodies
 
