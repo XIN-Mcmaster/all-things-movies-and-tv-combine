@@ -10,15 +10,9 @@ connectDB()
 
 const app = express();
 
-const corsOptions = {
-  allowedHeaders: ["authorization", "Content-Type"], // you can change the headers
-  exposedHeaders: ["authorization"], // you can change the headers
-  origin: "*",
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  preflightContinue: false
-}
-
-app.use(cors(corsOptions))
+app.use(cors({
+  origin: process.env.FRONTEND_URL
+}))
 
 app.use(express.json()); // Middleware to parse JSON bodies
 
