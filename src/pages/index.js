@@ -1,11 +1,11 @@
 import * as React from "react"
-import { useState } from "react"
+
 import Layout from "../layout/Layout"
 import MovieGallery from "../components/MovieGallery"
 
 
 const IndexPage = () => {
-  const [searchBy, setSearchBy] = useState("")
+
   return (
     <>
       <Layout>
@@ -22,7 +22,7 @@ const IndexPage = () => {
             <h1>Search Movies</h1>
           </div>
           <div>
-            <MovieGallery searchType={searchBy} />
+            <MovieGallery />
           </div>
         </div>
 

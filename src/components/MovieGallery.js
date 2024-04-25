@@ -1,6 +1,7 @@
 import * as React from "react"
 import { useState, useEffect } from "react"
 import Masonry from "react-masonry-css"
+import Pagination from 'react-bootstrap/Pagination'; 
 import "../styles/MoviesGallery.css"
 import Loading from "./Loading"
 import PosterDetail from "./Poster"
@@ -8,7 +9,7 @@ import axios from 'axios';
 
 const apiKey = process.env.GATSBY_OMDB_API_KEY;
 
-const MovieGallery = ({ onLike, searchType }) => {
+const MovieGallery = ({  }) => {
 
   const [tinput, settInput] = React.useState("")
   const [yinput, setyInput] = React.useState("")
@@ -16,6 +17,16 @@ const MovieGallery = ({ onLike, searchType }) => {
   const [year, setYear] = useState("")
   const [loading, setLoading] = React.useState(false)
   const [data, setData] = useState([])
+  const [page,setPage] =useState(1)
+
+  let items = [];
+  for (let number = 1; number <= 5; number++) {
+    items.push(
+      <Pagination.Item key={number} active={number === page} onClick={()=>setPage(number)}>
+        {number}
+      </Pagination.Item>,
+    );
+  }
 
 
   const gridColumns = {
@@ -38,26 +49,31 @@ const MovieGallery = ({ onLike, searchType }) => {
   const handleSearch = () => {
     setKeyword(tinput)
     setYear(yinput)
+    setPage(1)
     setLoading(true)
     setData([])
   }
+
+
 
   useEffect(() => {
     const fetchMovies = async () => {
       if (keyword) {
 
         try {
-          const response = await axios.get(`https://www.omdbapi.com/?apikey=${apiKey}&s=${keyword}&y=${year}`);
+          const response = await axios.get(`https://www.omdbapi.com/?apikey=${apiKey}&s=${keyword}&y=${year}&page=${page}`);
           setData(response.data.Search);
+          setLoading(false)
         } catch (error) {
           console.error('Error fetching data:', error);
 
         }
-        setLoading(false)
+       
       } else {
         try {
-          const response = await axios.get(`https://www.omdbapi.com/?apikey=${apiKey}&s=Ted&page=2`);
+          const response = await axios.get(`https://www.omdbapi.com/?apikey=${apiKey}&s=Ted&page=${page}`);
           setData(response.data.Search);
+          setLoading(false)
         } catch (error) {
           console.error('Error fetching data:', error);
         }
@@ -65,7 +81,7 @@ const MovieGallery = ({ onLike, searchType }) => {
       }
     }
     fetchMovies();
-  }, [keyword, year])
+  }, [keyword, year,page])
 
   console.log(data)
 
@@ -79,13 +95,13 @@ const MovieGallery = ({ onLike, searchType }) => {
 
           <div style={{ display: "flex" }}>
             <div className="ontario-form-group search-input" style={{ marginRight: "var(--space-2)" }}>
-              <label className="ontario-label" for="text-input-example">
+              <label className="ontario-label" htmlFor="text-input-example">
                 Title<span className="ontario-label__flag"></span>
               </label>
               <input className="ontario-input" type="text" id="text-input-example" onChange={handleTtileSearch} />
             </div>
             <div className="ontario-form-group search-input" style={{ marginRight: "var(--space-2)" }}>
-              <label className="ontario-label" for="text-input-example">
+              <label className="ontario-label" htmlFor="text-input-example">
                 Year<span className="ontario-label__flag"></span>
               </label>
               <input className="ontario-input" type="text" id="text-input-example" onChange={handleYearSearch} />
@@ -118,9 +134,11 @@ const MovieGallery = ({ onLike, searchType }) => {
               ))}
           </Masonry>
         )}
-
-
       </div>
+
+      <div style={{ display: 'block', width: 700, padding: 30 }}>
+        <Pagination>{items}</Pagination>
+      </div> 
     </>
   );
 

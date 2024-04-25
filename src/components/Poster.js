@@ -31,19 +31,21 @@ export default function PosterDetail({ id }) {
 
 
   return (
-
-    <Card style={{ width: '100%' }}>
-      <Card.Img variant="top" src={poster.Poster} className="images" />
-      <Card.Body>
-        <Card.Title><strong>{poster.Title}</strong></Card.Title>
-        <Card.Text>
-          <div className="ontario-margin-bottom-4-!">Year: {poster.Year}</div>
-          <div className="ontario-margin-bottom-4-!">Actors: {poster.Actors}</div>
-          <div className="ontario-margin-bottom-16-!">Genre: {poster.Genre}</div>
-          <p>{poster.Plot}</p>
-        </Card.Text>
-      </Card.Body>
-    </Card>
-
+    <>
+      {poster.Poster != "N/A" &&
+        <Card style={{ width: '100%' }}>
+          <Card.Img variant="top" src={poster.Poster} className="images" />
+          <Card.Body>
+            <Card.Title><strong>{poster.Title}</strong></Card.Title>
+            <Card.Text>
+              <div className="ontario-margin-bottom-4-!">Year: {poster.Year}</div>
+              <div className="ontario-margin-bottom-4-!">Actors: {poster.Actors}</div>
+              <div className="ontario-margin-bottom-16-!">Genre: {poster.Genre}</div>
+              <p>{poster.Plot}</p>
+            </Card.Text>
+          </Card.Body>
+        </Card>
+      }
+    </>
   );
 }

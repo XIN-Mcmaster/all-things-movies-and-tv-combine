@@ -3,7 +3,6 @@ import { Link } from "gatsby"
 import MenuClose from '../components/svgs/menuclose'
 import MenuOpen from '../components/svgs/menuopen'
 import logo from '../../ontario-design-system/logos/ontario-logo--desktop.svg'
-import * as styles from "../styles/header.module.css"
 
 
 const Header=() =>{
@@ -15,6 +14,7 @@ const Header=() =>{
     
   }, []);
   const [click, setClick] = useState(false)
+  
   const handleClick = () => {
     return setClick(!click)
   }
@@ -52,7 +52,8 @@ const Header=() =>{
                       <li><Link to=""></Link></li>
                       <li><Link to=""></Link></li>
                     </ul>
-                    <button className='ontario-header__menu-toggler ontario-header-button ontario-header-button--with-outline ontario-show-for-small-only' id='ontario-header-menu-toggler' aria-controls='ontario-navigation' aria-label='Show navigation menu' type='button'>
+                    <button className='ontario-header__menu-toggler ontario-header-button ontario-header-button--with-outline ontario-show-for-small-only' 
+                    id='ontario-header-menu-toggler' aria-controls='ontario-navigation' aria-label='Show navigation menu' type='button' onClick={handleClick}>
                       {click? <MenuClose fill={'white'}/>:<MenuOpen fill={'white'}/>}
                       <span>Menu</span>
                     </button>
