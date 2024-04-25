@@ -65,7 +65,7 @@ const MovieGallery = ({ onLike, searchType }) => {
       }
     }
     fetchMovies();
-  }, [keyword, searchType])
+  }, [keyword, year])
 
   console.log(data)
 
