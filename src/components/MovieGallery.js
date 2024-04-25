@@ -4,6 +4,9 @@ import Masonry from "react-masonry-css"
 import "../styles/MoviesGallery.css"
 import Loading from "./Loading"
 import PosterDetail from "./Poster"
+import axios from 'axios';
+
+const apiKey = process.env.GATSBY_OMDB_API_KEY;
 
 const MovieGallery = ({ onLike, searchType }) => {
 
@@ -27,7 +30,7 @@ const MovieGallery = ({ onLike, searchType }) => {
     settInput(event.target.value)
   }
 
-  const handleYearSearch = event =>{
+  const handleYearSearch = event => {
     setyInput(event.target.value)
   }
 
@@ -42,36 +45,23 @@ const MovieGallery = ({ onLike, searchType }) => {
   useEffect(() => {
     const fetchMovies = async () => {
       if (keyword) {
-        const body = {
-          keyword: keyword,
-          year: year,
-        }
 
-        const res = await fetch(
-          `${process.env.GATSBY_BACKEND_URL}/api/movies/search`,
-          {
-            method: "POST",
-            body: JSON.stringify(body),
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        )
-        const json = await res.json()
-        setData(json?.data);
+        try {
+          const response = await axios.get(`https://www.omdbapi.com/?apikey=${apiKey}&s=${keyword}&y=${year}`);
+          setData(response.data.Search);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+
+        }
         setLoading(false)
       } else {
-        const res = await fetch(
-          `${process.env.GATSBY_BACKEND_URL}/api/movies/`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        )
-        const json = await res.json()
-        console.log(' json?.data = ', json?.data)
-        setData(json?.data);
+        try {
+          const response = await axios.get(`https://www.omdbapi.com/?apikey=${apiKey}&s=Ted&page=2`);
+          setData(response.data.Search);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+
       }
     }
     fetchMovies();
