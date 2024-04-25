@@ -32,7 +32,7 @@ export default function PosterDetail({ id }) {
 
   return (
     <>
-      {poster.Poster != "N/A" &&
+      {poster.Poster !== "N/A" &&
         <Card style={{ width: '100%' }}>
           <Card.Img variant="top" src={poster.Poster} className="images" />
           <Card.Body>

@@ -1,7 +1,6 @@
 import * as React from "react"
 import { useState, useEffect } from "react"
 import Masonry from "react-masonry-css"
-import Pagination from 'react-bootstrap/Pagination'; 
 import "../styles/MoviesGallery.css"
 import Loading from "./Loading"
 import PosterDetail from "./Poster"
@@ -19,14 +18,8 @@ const MovieGallery = ({  }) => {
   const [data, setData] = useState([])
   const [page,setPage] =useState(1)
 
-  let items = [];
-  for (let number = 1; number <= 5; number++) {
-    items.push(
-      <Pagination.Item key={number} active={number === page} onClick={()=>setPage(number)}>
-        {number}
-      </Pagination.Item>,
-    );
-  }
+  const [loadmore, setLoadmore] = React.useState(false)
+
 
 
   const gridColumns = {
@@ -54,7 +47,27 @@ const MovieGallery = ({  }) => {
     setData([])
   }
 
+  useEffect(() => {
 
+    const handleScroll = () => {
+      if (document.documentElement.offsetHeight - window.scrollY - window.innerHeight <= 200) {
+        setLoadmore(true)
+      } else {
+        setLoadmore(false)
+      }
+    };
+
+
+    window.addEventListener("scroll", handleScroll)
+
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
+
+  useEffect(() => {
+    if (loadmore) {
+      setPage((current) => current + 1)
+    }
+  }, [loadmore])
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -62,7 +75,9 @@ const MovieGallery = ({  }) => {
 
         try {
           const response = await axios.get(`https://www.omdbapi.com/?apikey=${apiKey}&s=${keyword}&y=${year}&page=${page}`);
-          setData(response.data.Search);
+          // setData(response.data.Search);
+          const res= response.data.Search.filter(value=>value.Poster!=="N/A")
+          setData((predata) => [...predata, ...res]);
           setLoading(false)
         } catch (error) {
           console.error('Error fetching data:', error);
@@ -72,7 +87,9 @@ const MovieGallery = ({  }) => {
       } else {
         try {
           const response = await axios.get(`https://www.omdbapi.com/?apikey=${apiKey}&s=Ted&page=${page}`);
-          setData(response.data.Search);
+          // setData(response.data.Search);
+          const res= response.data.Search.filter(value=>value.Poster!=="N/A")
+          setData((predata) => [...predata, ...res]);
           setLoading(false)
         } catch (error) {
           console.error('Error fetching data:', error);
@@ -136,9 +153,7 @@ const MovieGallery = ({  }) => {
         )}
       </div>
 
-      <div style={{ display: 'block', width: 700, padding: 30 }}>
-        <Pagination>{items}</Pagination>
-      </div> 
+
     </>
   );
 
